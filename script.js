@@ -1,21 +1,21 @@
 //setting up my starting time
-var textHour = 9;
-var textSuffix = ":00am";
+var text_Hour = 9;
+var text_Suffix = ":00am";
 
 var storedBlocks = [];
-var storedBlocksName = "Stored Blocks";
+var storedBlocks_NAME = "Stored Blocks";
 
-function setBGColor($div, currenTime, textTime) {
-    var iTime_Cur = currenTime.split("");
+function setBGColor($div, currentTime, textTime) {
+    var iTime_CUR = currenTime.split("");
     var iTime_TXT = textTime.splot("");
 
-    if (iTime_Cur[iTime_Cur.length - 2] !== iTime_TXT[iTime_TXT.length - 2]) {
-        if (iTime_Cur[iTime_Cur.length - 2] > iTime_TXT[iTime_TXT.length - 2]) {
+    if (iTime_CUR[iTime_CUR.length - 2] !== iTime_TXT[iTime_TXT.length - 2]) {
+        if (iTime_CUR[iTime_CUR.length - 2] > iTime_TXT[iTime_TXT.length - 2]) {
             console.log("p > a");
             $div.addClass("bg-secondary")
         } else {
             console.log("p > a");
-            $div.class("bg-primary");
+            $div.addClass("bg-primary");
         }
     } else {
         console.log("same time of day");
@@ -85,3 +85,111 @@ function incrementTextHour() {
         text_Hour++;
     }
 }
+
+//displaying the date
+function DisplayDate(pFormat) {
+    var date = moment().format(pFormat);
+
+    $("#current-date").text(date);
+}
+
+//setting up the current hour
+function GetCurrentHour(pFormat) {
+    var time = moment().format(pFormat).toLowerCase();
+
+    time = time.split("");
+
+    var suffix = "";
+
+    var hour = parseHour(time);
+
+    console.log(hour);
+
+    if (time[time.length - 2] === "p") {
+        console.log("afternoon");
+        suffix = ":00pm";
+    } else {
+        console.log("morning");
+        suffix = ":00am";
+    }
+
+    console.log(hour + suffix);
+    return hour + suffix;
+}
+
+
+function parseHour(pTime) {
+    var i = 0;
+    var iHour = "";
+
+    while (pTime[i] !== ":" || i > 100) {
+        iHour += pTime[i];
+        i++;
+    }
+
+    return iHour;
+}
+
+//having the user info to be stored inside the local storage
+function AlterStoredBlocks(pText, pID) {
+    nBlock = {
+        id: pID,
+        input: pText.trim()
+    }
+
+    for (var i = 0; i < storedBlocks.length; i++) {
+        if (storedBlocks[i].id === nBlock.id) {
+            storedBlocks.splice(i, 1);
+
+            localStorage.setItem(storedBlocks_NAME, JSON.stringify(storedBlocks));
+
+            return null;
+        }
+    }
+
+    storedBlocks.push(nBlock);
+
+    localStorage.setItem(storedBlocks_NAME, JSON.stringify(storedBlocks));
+}
+
+function GetStoredBlocks() {
+
+    if (localStorage.getItem(storedBlocks_NAME)) {
+        storedBlocks = JSON.parse(localStorage.getItem(storedBlocks_NAME));
+
+        storedBlocks.forEach(iBlock => {
+
+            iID = "#" + iBlock.id;
+
+            $iBlock = $(document.getElementById(iBlock.id));
+
+            $iBlock.val(iBlock.input);
+
+            $iLock = $(($iBlock).parent().children().children()[1])
+
+            $iLock.toggleClass("unlocked");
+
+        });
+
+    }
+
+}
+
+generateHourBlock(9);
+DisplayDate("LLLL");
+GetStoredBlocks();
+
+
+$(".lock").click(function() {
+    console.log("lock clicked");
+
+
+    $(this).toggleClass('unlocked');
+
+    $iTextArea = $($(this).parent().parent().children()[1]);
+
+    iInput = $iTextArea.val();
+    iID = $iTextArea.attr("id");
+
+    AlterStoredBlocks(iInput, iID);
+});
