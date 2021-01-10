@@ -39,3 +39,49 @@ function setBGColor($div, currenTime, textTime) {
         }
     }
 }
+
+//setting up the area for the user to be able to save their info
+function generateHourBlock(iterations) {
+    if (!iterations) {
+        iterations = 1;
+    }
+
+    var currentTime = GetCurrentHour("LT");
+
+    for (var i = 0; i < iterations; i++) {
+        var text_time = text_Hour + text_Suffix;
+
+        $iBlock = $("<div>").addClass("row py-1");
+
+        $iTimeText = $("<h5>").addClass("text-center").text(text_time);
+        $iTimeDiv = $("<div>").addClass("col-2 py-3 bg-warning align-middle").append($iTimeText);
+
+        $iTextDiv = $("<textarea>").addClass("col-8 py-3 overflow-auto").text("").attr("id", text_time);
+        setBGColor($iTextDiv, currentTime, text_time);
+
+        $iLockIcon = $("<span>").addClass("lock");
+
+        $iLockDiv = $("<div>").addClass("col-1 py-3 lock-container border border-primary").append($iLockIcon);
+
+        $iLockIcon.toggleClass('unlocked');
+
+        $iBlock.append($iTimeDiv, $iTextDiv, $iLockDiv);
+
+        $("#planner").append($iBlock);
+
+        incrementTextHour();
+    }
+
+}
+
+//setting up the hours
+function incrementTextHour() {
+    if (text_Hour === 12) {
+        text_Hour = 1;
+    } else if (text_Hour === 11) {
+        text_Suffix = ":00pm";
+        text_Hour++;
+    } else {
+        text_Hour++;
+    }
+}
