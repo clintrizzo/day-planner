@@ -1,4 +1,3 @@
-//setting up my starting time
 var text_Hour = 9;
 var text_Suffix = ":00am";
 
@@ -6,32 +5,24 @@ var storedBlocks = [];
 var storedBlocks_NAME = "Stored Blocks";
 
 function setBGColor($div, currentTime, textTime) {
-    var iTime_CUR = currenTime.split("");
-    var iTime_TXT = textTime.splot("");
+    var iTime_CUR = currentTime.split("");
+    var iTime_TXT = textTime.split("");
 
     if (iTime_CUR[iTime_CUR.length - 2] !== iTime_TXT[iTime_TXT.length - 2]) {
         if (iTime_CUR[iTime_CUR.length - 2] > iTime_TXT[iTime_TXT.length - 2]) {
-            console.log("p > a");
-            $div.addClass("bg-secondary")
+            $div.addClass("bg-secondary");
         } else {
-            console.log("p > a");
             $div.addClass("bg-primary");
         }
     } else {
-        console.log("same time of day");
-
         var t_CUR = parseHour(iTime_CUR);
         var t_TXT = parseHour(iTime_TXT);
-
         if (parseInt(t_CUR) > parseInt(t_TXT)) {
-            console.log("current greater");
             $div.addClass("bg-secondary");
         } else if (parseInt(t_CUR) < parseInt(t_TXT)) {
             if (parseInt(t_TXT) === 12) {
-                console.log("current greater");
                 $div.addClass("bg-secondary");
             } else {
-                console.log("current less");
                 $div.addClass("bg-primary");
             }
         } else {
@@ -39,8 +30,8 @@ function setBGColor($div, currentTime, textTime) {
         }
     }
 }
-
-//setting up the area for the user to be able to save their info
+//creating the blocks for the times/text/unlocked boxes box using jquery
+//setting the columns to fit across the site
 function generateHourBlock(iterations) {
     if (!iterations) {
         iterations = 1;
@@ -73,8 +64,7 @@ function generateHourBlock(iterations) {
     }
 
 }
-
-//setting up the hours
+//setting the time blocks
 function incrementTextHour() {
     if (text_Hour === 12) {
         text_Hour = 1;
@@ -93,7 +83,7 @@ function DisplayDate(pFormat) {
     $("#current-date").text(date);
 }
 
-//setting up the current hour
+//using moment.js to set the time and date
 function GetCurrentHour(pFormat) {
     var time = moment().format(pFormat).toLowerCase();
 
@@ -103,9 +93,11 @@ function GetCurrentHour(pFormat) {
 
     var hour = parseHour(time);
 
+    //testing for the hour number
     console.log(hour);
 
     if (time[time.length - 2] === "p") {
+        //test for the response of morning or afternoon
         console.log("afternoon");
         suffix = ":00pm";
     } else {
@@ -113,10 +105,10 @@ function GetCurrentHour(pFormat) {
         suffix = ":00am";
     }
 
+    //testing for the correct hour to be returned as 0:00am/pm
     console.log(hour + suffix);
     return hour + suffix;
 }
-
 
 function parseHour(pTime) {
     var i = 0;
@@ -130,7 +122,7 @@ function parseHour(pTime) {
     return iHour;
 }
 
-//having the user info to be stored inside the local storage
+//setting the browser to save the info placed inside the text area
 function AlterStoredBlocks(pText, pID) {
     nBlock = {
         id: pID,
@@ -152,6 +144,8 @@ function AlterStoredBlocks(pText, pID) {
     localStorage.setItem(storedBlocks_NAME, JSON.stringify(storedBlocks));
 }
 
+
+//setting my info to be retrieved from local storage
 function GetStoredBlocks() {
 
     if (localStorage.getItem(storedBlocks_NAME)) {
@@ -179,7 +173,8 @@ generateHourBlock(9);
 DisplayDate("LLLL");
 GetStoredBlocks();
 
-
+//setting my locks and setting the attribute
+//console logging the click function for the locks
 $(".lock").click(function() {
     console.log("lock clicked");
 
