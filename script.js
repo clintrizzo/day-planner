@@ -40,6 +40,7 @@ function generateHourBlock(iterations) {
 
     var currentTime = GetCurrentHour("LT");
 
+    //setting the blocks and appending to my div id planner
     for (var i = 0; i < iterations; i++) {
         var text_time = text_Hour + text_Suffix;
 
@@ -99,7 +100,7 @@ function GetCurrentHour(pFormat) {
 
     if (time[time.length - 2] === "p") {
         //test for the response of morning or afternoon
-        console.log("afternoon");
+        console.log("evening");
         suffix = ":00pm";
     } else {
         console.log("morning");
@@ -175,8 +176,8 @@ DisplayDate("LLLL");
 GetStoredBlocks();
 
 //setting my locks and setting the attribute
-//console logging the click function for the locks
 $(".lock").click(function() {
+    //testing for when the lock is clicked
     console.log("lock clicked");
 
 
