@@ -27,6 +27,7 @@ function setBGColor($div, currentTime, textTime) {
             }
         } else {
             $div.addClass("bg-warning");
+            console.log(t_CUR())
         }
     }
 }
