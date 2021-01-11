@@ -1,4 +1,4 @@
-html>body {
+html body {
     width: 100%;
     height: 100%;
 }
@@ -11,7 +11,6 @@ body {
     background-image: url("mountains.png");
     background-repeat: no-repeat;
     background-size: cover;
-    opacity: 0.8;
 }
 
 p {
@@ -19,14 +18,14 @@ p {
 }
 
 
-/*lock planner used from src="https://codepen.io/beccakroese/pen/GQgwbx"*/
+/*lock planner used from src="https://codepen.io/beccakroese/pen/GQgwbx" tweaked a few things from the src*/
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    --locked-color: #5fadbf;
-    --unlocked-color: #ff5153;
+    --locked-color: rgb(8, 248, 8);
+    --unlocked-color: red;
 }
 
 .lock-container {
@@ -41,7 +40,7 @@ p {
 .lock {
     width: 24px;
     height: 21px;
-    border: 3px solid var(--locked-color);
+    border: 4px solid var(--locked-color);
     border-radius: 5px;
     position: relative;
     cursor: pointer;
