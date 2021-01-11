@@ -1,192 +1,49 @@
-var text_Hour = 9;
-var text_Suffix = ":00am";
+$(document).ready(function() {
 
-var storedBlocks = [];
-var storedBlocks_NAME = "Stored Blocks";
 
-function setBGColor($div, currentTime, textTime) {
-    var iTime_CUR = currentTime.split("");
-    var iTime_TXT = textTime.split("");
+    function hourUpdater() {
+        // get current number of hours
+        var currentHour = moment().hours();
 
-    if (iTime_CUR[iTime_CUR.length - 2] !== iTime_TXT[iTime_TXT.length - 2]) {
-        if (iTime_CUR[iTime_CUR.length - 2] > iTime_TXT[iTime_TXT.length - 2]) {
-            $div.addClass("bg-secondary");
-        } else {
-            $div.addClass("bg-primary");
-        }
-    } else {
-        var t_CUR = parseHour(iTime_CUR);
-        var t_TXT = parseHour(iTime_TXT);
-        if (parseInt(t_CUR) > parseInt(t_TXT)) {
-            $div.addClass("bg-secondary");
-        } else if (parseInt(t_CUR) < parseInt(t_TXT)) {
-            if (parseInt(t_TXT) === 12) {
-                $div.addClass("bg-secondary");
+        // loop over time blocks
+        $(".time-block").each(function() {
+            var blockHour = parseInt($(this).attr("id").split("-")[1]);
+
+            // check if we've moved past this time
+            if (blockHour < currentHour) {
+                $(this).addClass("past");
+            } else if (blockHour === currentHour) {
+                $(this).removeClass("past");
+                $(this).addClass("present");
             } else {
-                $div.addClass("bg-primary");
+                $(this).removeClass("past");
+                $(this).removeClass("present");
+                $(this).addClass("future");
             }
-        } else {
-            $div.addClass("bg-warning");
-            console.log(t_CUR())
-        }
-    }
-}
-//creating the blocks for the times/text/unlocked boxes box using jquery
-//setting the columns to fit across the site
-function generateHourBlock(iterations) {
-    if (!iterations) {
-        iterations = 1;
-    }
-
-    var currentTime = GetCurrentHour("LT");
-
-    //setting the blocks and appending to my div id planner
-    for (var i = 0; i < iterations; i++) {
-        var text_time = text_Hour + text_Suffix;
-
-        $iBlock = $("<div>").addClass("row py-1");
-
-        $iTimeText = $("<h5>").addClass("text-center").text(text_time);
-        $iTimeDiv = $("<div>").addClass("col-2 py-3 bg-warning align-middle").append($iTimeText);
-
-        $iTextDiv = $("<textarea>").addClass("col-8 py-3 overflow-auto").text("").attr("id", text_time);
-        setBGColor($iTextDiv, currentTime, text_time);
-
-        $iLockIcon = $("<span>").addClass("lock");
-
-        $iLockDiv = $("<div>").addClass("col-1 py-3 lock-container border border-primary").append($iLockIcon);
-
-        $iLockIcon.toggleClass('unlocked');
-
-        $iBlock.append($iTimeDiv, $iTextDiv, $iLockDiv);
-
-        $("#planner").append($iBlock);
-
-        incrementTextHour();
-    }
-
-}
-//setting the time blocks
-function incrementTextHour() {
-    if (text_Hour === 12) {
-        text_Hour = 1;
-    } else if (text_Hour === 11) {
-        text_Suffix = ":00pm";
-        text_Hour++;
-    } else {
-        text_Hour++;
-    }
-}
-
-//displaying the date
-function DisplayDate(pFormat) {
-    var date = moment().format(pFormat);
-
-    $("#current-date").text(date);
-}
-
-//using moment.js to set the time and date
-function GetCurrentHour(pFormat) {
-    var time = moment().format(pFormat).toLowerCase();
-
-    time = time.split("");
-
-    var suffix = "";
-
-    var hour = parseHour(time);
-
-    //testing for the hour number
-    console.log(hour);
-
-    if (time[time.length - 2] === "p") {
-        //test for the response of morning or afternoon
-        console.log("evening");
-        suffix = ":00pm";
-    } else {
-        console.log("morning");
-        suffix = ":00am";
-    }
-
-    //testing for the correct hour to be returned as 0:00am/pm
-    console.log(hour + suffix);
-    return hour + suffix;
-}
-
-function parseHour(pTime) {
-    var i = 0;
-    var iHour = "";
-
-    while (pTime[i] !== ":" || i > 100) {
-        iHour += pTime[i];
-        i++;
-    }
-
-    return iHour;
-}
-
-//setting the browser to save the info placed inside the text area
-function AlterStoredBlocks(pText, pID) {
-    nBlock = {
-        id: pID,
-        input: pText.trim()
-    }
-
-    for (var i = 0; i < storedBlocks.length; i++) {
-        if (storedBlocks[i].id === nBlock.id) {
-            storedBlocks.splice(i, 1);
-
-            localStorage.setItem(storedBlocks_NAME, JSON.stringify(storedBlocks));
-
-            return null;
-        }
-    }
-
-    storedBlocks.push(nBlock);
-
-    localStorage.setItem(storedBlocks_NAME, JSON.stringify(storedBlocks));
-}
-
-
-//setting my info to be retrieved from local storage
-function GetStoredBlocks() {
-
-    if (localStorage.getItem(storedBlocks_NAME)) {
-        storedBlocks = JSON.parse(localStorage.getItem(storedBlocks_NAME));
-
-        storedBlocks.forEach(iBlock => {
-
-            iID = "#" + iBlock.id;
-
-            $iBlock = $(document.getElementById(iBlock.id));
-
-            $iBlock.val(iBlock.input);
-
-            $iLock = $(($iBlock).parent().children().children()[1])
-
-            $iLock.toggleClass("unlocked");
-
         });
-
     }
 
-}
+    hourUpdater();
 
-generateHourBlock(9);
-DisplayDate("LLLL");
-GetStoredBlocks();
+    // set up interval to check if current time needs to be updated
+    var interval = setInterval(hourUpdater, 15000);
 
-//setting my locks and setting the attribute
+    // load any saved data from localStorage
+    $("#hour-9 .description").val(localStorage.getItem("hour-9"));
+    $("#hour-10 .description").val(localStorage.getItem("hour-10"));
+    $("#hour-11 .description").val(localStorage.getItem("hour-11"));
+    $("#hour-12 .description").val(localStorage.getItem("hour-12"));
+    $("#hour-13 .description").val(localStorage.getItem("hour-13"));
+    $("#hour-14 .description").val(localStorage.getItem("hour-14"));
+    $("#hour-15 .description").val(localStorage.getItem("hour-15"));
+    $("#hour-16 .description").val(localStorage.getItem("hour-16"));
+    $("#hour-17 .description").val(localStorage.getItem("hour-17"));
+
+    // display current day on page
+    $("#currentDay").text(moment().format("dddd, MMMM Do"));
+});
+
 $(".lock").click(function() {
-    //testing for when the lock is clicked
-    console.log("lock clicked");
-
-
     $(this).toggleClass('unlocked');
-
-    $iTextArea = $($(this).parent().parent().children()[1]);
-
-    iInput = $iTextArea.val();
-    iID = $iTextArea.attr("id");
-
-    AlterStoredBlocks(iInput, iID);
+    console.log(function)
 });
