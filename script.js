@@ -1,21 +1,15 @@
 $(document).ready(function() {
-
-    //click event for the save button
     $(".saveBtn").on("click", function() {
-        // get nearby values
         var value = $(this).siblings(".description").val();
         var time = $(this).parent().attr("id");
         console.log
-            // save in localStorage
         localStorage.setItem(time, value);
     });
-
-
 
     function hourUpdater() {
         var currentHour = moment().hours();
 
-        $(".time-block").each(function() {
+        $(".time").each(function() {
             var blockHour = parseInt($(this).attr("id").split("-")[1]);
             if (blockHour < currentHour) {
                 $(this).addClass("past");
@@ -43,6 +37,6 @@ $(document).ready(function() {
     $("#hour-15 .description").val(localStorage.getItem("hour-15"));
     $("#hour-16 .description").val(localStorage.getItem("hour-16"));
     $("#hour-17 .description").val(localStorage.getItem("hour-17"));
-    //using moment.js for the current time / added the time 
+
     $("#currentDay").text(moment().format("MMMM Do YYYY, h:mm a"));
 });
