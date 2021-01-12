@@ -1,11 +1,21 @@
 $(document).ready(function() {
 
+    //click event for the save button
+    $(".saveBtn").on("click", function() {
+        // get nearby values
+        var value = $(this).siblings(".description").val();
+        var time = $(this).parent().attr("id");
+
+        // save in localStorage
+        localStorage.setItem(time, value);
+    });
+
+
 
     function hourUpdater() {
         // get current number of hours
         var currentHour = moment().hours();
 
-        // loop over time blocks
         $(".time-block").each(function() {
             var blockHour = parseInt($(this).attr("id").split("-")[1]);
 
@@ -24,12 +34,10 @@ $(document).ready(function() {
     }
 
     hourUpdater();
-
-    // set up interval to check if current time needs to be updated
     var interval = setInterval(hourUpdater, 15000);
 
     // load any saved data from localStorage
-    $("#hour-9 .description").val(localStorage.getItem("hour-9"));
+    $("#hour-9 .text").val(localStorage.getItem("hour-9"));
     $("#hour-10 .description").val(localStorage.getItem("hour-10"));
     $("#hour-11 .description").val(localStorage.getItem("hour-11"));
     $("#hour-12 .description").val(localStorage.getItem("hour-12"));
@@ -39,11 +47,6 @@ $(document).ready(function() {
     $("#hour-16 .description").val(localStorage.getItem("hour-16"));
     $("#hour-17 .description").val(localStorage.getItem("hour-17"));
 
-    // display current day on page
-    $("#currentDay").text(moment().format("dddd, MMMM Do"));
-});
-
-$(".lock").click(function() {
-    $(this).toggleClass('unlocked');
-    console.log(function)
+    //using moment.js for the current time / added the time 
+    $("#currentDay").text(moment().format("MMMM Do YYYY, h:mm a"));
 });
