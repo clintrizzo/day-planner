@@ -11,10 +11,18 @@
         background-image: url("mountains.png");
         background-repeat: no-repeat;
         background-size: cover;
+        text-align: center;
+        font-size: 60px;
+        color: black;
+        text-shadow: 2px 2px 5px darkslategrey;
+        font-family: 'Inconsolata';
+        margin-top: -60px;
     }
     
-    p {
-        font-size: 34px;
+    .container {
+        font-size: 15PX;
+        background-color: white;
+        font-family: 'Inconsolata';
     }
     
     .saveBtn {
