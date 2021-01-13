@@ -58,12 +58,8 @@
     }
     
     .saveBtn i:hover {
-        font-size: 50px;
-        transition: all .1s ease-in-out;
-        color: green;
-    }
-    
-    #lock {
-        color: white;
         font-size: 30px;
+        color: aliceblue;
+        transform: translateY(-40%);
+        transition: 1s;
     }
