@@ -2,7 +2,6 @@ $(document).ready(function() {
     $(".saveBtn").on("click", function() {
         var value = $(this).siblings(".description").val();
         var time = $(this).parent().attr("id");
-        console.log
         localStorage.setItem(time, value);
     });
 
@@ -40,10 +39,3 @@ $(document).ready(function() {
 
     $("#currentDay").text(moment().format("MMMM Do YYYY, h:mm a"));
 });
-
-function lock() {
-    let lock = document.getElementById("lock");
-    lock.innerHTML = "&#xf3c1";
-};
-
-lock();
