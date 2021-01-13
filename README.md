@@ -16,7 +16,6 @@ This app is mainly used to keep your daily work schedule organized. All work hou
     3. future color: red
 Image of app:
 ![site](snapshot.png)
-[![video of active site](deployed.mp4)]
 # resources
 [moment.js youtube video for information on how to use moment](https://www.youtube.com/watch?v=n80RRNS1k64)
 [jQuery](https://api.jquery.com/)
