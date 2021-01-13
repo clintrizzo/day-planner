@@ -40,3 +40,10 @@ $(document).ready(function() {
 
     $("#currentDay").text(moment().format("MMMM Do YYYY, h:mm a"));
 });
+
+function lock() {
+    let lock = document.getElementById("lock");
+    lock.innerHTML = "&#xf3c1";
+};
+
+lock();
